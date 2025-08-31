@@ -30,6 +30,16 @@ async def test_usecases_get_should_not_found():
         == "Product not found with filter: 1e4f214e-85f7-461a-89d0-a751a32e3bb9"
     )
 
+@pytest.fixture
+async def products_inserted():
+    products = [
+        ProductIn(name="iPhone 14 Pro Max", code="A1", price=7500),
+        ProductIn(name="Samsung S23", code="A2", price=6500),
+        ProductIn(name="Xiaomi Redmi", code="A3", price=2500),
+    ]
+    for p in products:
+        await product_usecase.create(body=p)
+    return products
 
 @pytest.mark.usefixtures("products_inserted")
 async def test_usecases_query_should_filter_by_price():
