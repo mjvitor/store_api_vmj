@@ -32,11 +32,15 @@ async def test_usecases_get_should_not_found():
 
 
 @pytest.mark.usefixtures("products_inserted")
-async def test_usecases_query_should_return_success():
-    result = await product_usecase.query()
+async def test_usecases_query_should_filter_by_price():
+    
+    result = await product_usecase.query(price_min=5000, price_max=8000)
 
     assert isinstance(result, List)
-    assert len(result) > 1
+    assert len(result) > 0
+
+    for p in result:
+        assert 5000 < float(p.price) < 8000
 
 
 async def test_usecases_update_should_return_success(product_up, product_inserted):
